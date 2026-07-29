@@ -40,7 +40,7 @@ export const createServiceValidator = [
     .withMessage("Price must be a non-negative number"),
 
   body("imageUrl")
-    .optional()
+    .optional({ checkFalsy: true })
     .trim()
     .isURL()
     .withMessage("Image URL must be a valid URL"),
@@ -80,7 +80,7 @@ export const updateServiceValidator = [
     .withMessage("Price must be a non-negative number"),
 
   body("imageUrl")
-    .optional()
+    .optional({ checkFalsy: true })
     .trim()
     .isURL()
     .withMessage("Image URL must be a valid URL"),

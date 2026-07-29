@@ -12,9 +12,24 @@ const app = express();
 
 /* ----------------------- Security Middleware ----------------------- */
 
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  "http://localhost:5173",
+  "http://localhost:3000",
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "*",
+    origin(origin, callback) {
+      if (!origin) return callback(null, true);
+
+      // Check if origin matches allowedOrigins
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`Not allowed by CORS: ${origin}`));
+    },
     credentials: true,
   }),
 );
