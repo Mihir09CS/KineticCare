@@ -34,7 +34,7 @@ export const forgotPasswordService = async (email) => {
   await user.save({ validateBeforeSave: false });
 
   // Create reset URL
-  const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+  const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
   // Generate HTML email
   const html = resetPasswordTemplate({
