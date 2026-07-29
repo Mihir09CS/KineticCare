@@ -47,6 +47,19 @@ export const AuthProvider = ({ children }) => {
     return data;
   };
 
+  const loginWithGoogle = async (idToken) => {
+    const data = await authService.googleLogin(idToken);
+    if (data?.accessToken) {
+      localStorage.setItem("kinetic_access_token", data.accessToken);
+    }
+    if (data?.user) {
+      setUser(data.user);
+    } else {
+      await checkAuth();
+    }
+    return data;
+  };
+
   const registerUser = async (userData) => {
     const data = await authService.register(userData);
     return data;
@@ -73,11 +86,13 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: !!user,
     isAdmin: user?.role === "ADMIN",
     login: loginUser,
+    googleLogin: loginWithGoogle,
     register: registerUser,
     logout: logoutUser,
     updateUser: updateUserProfile,
     refreshUser: checkAuth,
   };
+
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

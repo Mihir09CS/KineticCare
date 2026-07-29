@@ -11,6 +11,12 @@ export const authService = {
     return response.data;
   },
 
+  async googleLogin(idToken) {
+    const response = await axiosClient.post("/auth/google", { idToken });
+    return response.data;
+  },
+
+
   async logout() {
     const response = await axiosClient.post("/auth/logout");
     return response.data;

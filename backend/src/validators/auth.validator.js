@@ -118,3 +118,15 @@ export const updateProfileValidator = [
     .isLength({ min: 3, max: 50 })
     .withMessage("Full name must be between 3 and 50 characters"),
 ];
+
+/* ==========================================================
+   Google Auth Validation
+========================================================== */
+
+export const googleAuthValidator = [
+  body("idToken")
+    .trim()
+    .notEmpty()
+    .withMessage("Google ID token is required"),
+];
+

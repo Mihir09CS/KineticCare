@@ -8,6 +8,7 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import { handleApiError } from "../../utils/errorHandler.js";
 import Input from "../../components/common/Input.jsx";
 import Button from "../../components/common/Button.jsx";
+import GoogleLoginButton from "../../components/auth/GoogleLoginButton.jsx";
 import { HeartPulse, User, Mail, Lock, ArrowRight, Shield, Heart, Star } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -28,7 +29,7 @@ const getPasswordStrength = (password) => {
 };
 
 const RegisterPage = () => {
-  const { register: registerAccount } = useAuth();
+  const { register: registerAccount, googleLogin } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [watchedPassword, setWatchedPassword] = useState("");
@@ -63,6 +64,29 @@ const RegisterPage = () => {
       setLoading(false);
     }
   };
+
+  const handleGoogleSuccess = async (idToken) => {
+    try {
+      setLoading(true);
+      const res = await googleLogin(idToken);
+      toast.success("Account authenticated with Google!");
+      const role = res?.user?.role;
+      if (role === "ADMIN") {
+        navigate("/admin/dashboard", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    } catch (err) {
+      handleApiError(err, "Google sign-up failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = (errorMsg) => {
+    toast.error(errorMsg || "Google authentication failed.");
+  };
+
 
   return (
     <div className="min-h-screen flex">
@@ -220,7 +244,25 @@ const RegisterPage = () => {
             </Button>
           </form>
 
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-white px-3 text-slate-400 font-semibold tracking-wider">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
+          <GoogleLoginButton
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            text="signup_with"
+          />
+
           <p className="text-xs text-slate-400 text-center mt-4 leading-relaxed">
+
             By creating an account, you agree to our{" "}
             <span className="text-teal-600 cursor-pointer hover:underline">Terms of Service</span>{" "}
             and{" "}

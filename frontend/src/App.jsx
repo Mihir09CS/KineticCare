@@ -1,8 +1,11 @@
 import { BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import AppRoutes from "./routes/AppRoutes.jsx";
+
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
 // Create TanStack Query Client
 const queryClient = new QueryClient({
@@ -17,11 +20,13 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AuthProvider>
-          <AppRoutes />
-          <Toaster
+    <GoogleOAuthProvider clientId={googleClientId}>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthProvider>
+            <AppRoutes />
+            <Toaster
+
             position="top-right"
             gutter={12}
             containerStyle={{ top: 72 }}
@@ -69,7 +74,8 @@ function App() {
         </AuthProvider>
       </BrowserRouter>
     </QueryClientProvider>
-  );
+  </GoogleOAuthProvider>
+);
 }
 
 export default App;

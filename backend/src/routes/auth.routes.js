@@ -1,6 +1,6 @@
 import express from "express";
 
-import { register, login, logout  } from "../controllers/auth.controller.js";
+import { register, login, logout, googleAuth } from "../controllers/auth.controller.js";
 
 import { getMe, updateMyProfile } from "../controllers/profile.controller.js";
 import { forgotPassword, resetPassword, changeMyPassword } from "../controllers/password.controller.js";
@@ -8,6 +8,7 @@ import { forgotPassword, resetPassword, changeMyPassword } from "../controllers/
 import {
   registerValidator,
   loginValidator,
+  googleAuthValidator,
   updateProfileValidator,
   forgotPasswordValidator,
   resetPasswordValidator,
@@ -26,6 +27,8 @@ const router = express.Router();
 router.post("/register", registerValidator, validate, register);
 
 router.post("/login", loginValidator, validate, login);
+router.post("/google", googleAuthValidator, validate, googleAuth);
+
 router.post(
   "/forgot-password",
   forgotPasswordValidator,

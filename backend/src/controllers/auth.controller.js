@@ -10,6 +10,7 @@ import {
   registerUser,
   loginUser,
   logoutUser,
+  googleLoginUser,
 } from "../services/auth.service.js";
 
 /* ==========================================================
@@ -39,6 +40,20 @@ export const login = asyncHandler(async (req, res) => {
 });
 
 /* ==========================================================
+   Google Auth
+========================================================== */
+
+export const googleAuth = asyncHandler(async (req, res) => {
+  const { accessToken, refreshToken, user } = await googleLoginUser(req.body);
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, accessTokenCookieOptions)
+    .cookie("refreshToken", refreshToken, refreshTokenCookieOptions)
+    .json(new ApiResponse(200, "Google authentication successful", user));
+});
+
+/* ==========================================================
    Logout User
 ========================================================== */
 
@@ -51,3 +66,4 @@ export const logout = asyncHandler(async (req, res) => {
     .clearCookie("refreshToken", refreshTokenCookieOptions)
     .json(new ApiResponse(200, "Logout successful"));
 });
+

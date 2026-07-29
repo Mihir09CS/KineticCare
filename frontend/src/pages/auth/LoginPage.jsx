@@ -8,11 +8,12 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import { handleApiError } from "../../utils/errorHandler.js";
 import Input from "../../components/common/Input.jsx";
 import Button from "../../components/common/Button.jsx";
+import GoogleLoginButton from "../../components/auth/GoogleLoginButton.jsx";
 import { HeartPulse, Mail, Lock, ArrowRight, CheckCircle2, Calendar, Activity } from "lucide-react";
 import toast from "react-hot-toast";
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, googleLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
@@ -46,6 +47,32 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
+
+  const handleGoogleSuccess = async (idToken) => {
+    try {
+      setLoading(true);
+      const res = await googleLogin(idToken);
+      toast.success("Signed in with Google successfully!");
+      const role = res?.user?.role;
+      const from = location.state?.from?.pathname;
+      if (from) {
+        navigate(from, { replace: true });
+      } else if (role === "ADMIN") {
+        navigate("/admin/dashboard", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    } catch (err) {
+      handleApiError(err, "Google sign-in failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = (errorMsg) => {
+    toast.error(errorMsg || "Google authentication failed.");
+  };
+
 
   return (
     <div className="min-h-screen flex">
@@ -167,7 +194,25 @@ const LoginPage = () => {
             </Button>
           </form>
 
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-200" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-white px-3 text-slate-400 font-semibold tracking-wider">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
+          <GoogleLoginButton
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            text="continue_with"
+          />
+
           <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+
             <p className="text-sm text-slate-600">
               Don't have an account?{" "}
               <Link to="/register" className="font-bold text-teal-600 hover:text-teal-700 transition-colors">
