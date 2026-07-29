@@ -7,10 +7,10 @@ A full-stack MERN healthcare appointment booking platform that enables users to 
 # 🌐 Live Demo
 
 ### Frontend
-https://your-frontend-url.vercel.app
+https://kinetic-care-kc.vercel.app/
 
 ### Backend API
-https://your-backend-url.vercel.app/api/v1
+https://kinetic-care-khaki.vercel.app/api/v1
 
 ---
 
