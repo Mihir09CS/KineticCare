@@ -70,3 +70,5 @@ Thumbs.db
 # Misc
 # ===========================
 *.local
+
+audit_report.md
