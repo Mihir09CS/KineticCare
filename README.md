@@ -486,6 +486,31 @@ Authentication
 
 ---
 
+# 📄 Documentation
+
+The project documentation is available in the **docs** directory.
+
+| Document | Description |
+|----------|-------------|
+| 📘 Database & Architecture | Overall system architecture, database schema, authentication flow, booking flow, and design decisions. |
+| 📊 ER Diagram | Entity Relationship Diagram illustrating the MongoDB collections and their relationships. |
+| 🏗️ System Architecture | High-level architecture showing communication between the frontend, backend, authentication layer, and MongoDB. |
+| 🔗 API Documentation | REST API endpoints, request/response examples, authentication, and error responses. |
+
+## Documents
+
+- 📘 **Database Schema & Architecture**
+  - `docs/KineticCare_Database_Architecture_Document.pdf`
+
+- 📊 **ER Diagram**
+  - `docs/ER_Diagram.pdf`
+
+- 🏗️ **System Architecture Diagram**
+  - `docs/System_Architecture_Diagram.pdf`
+
+- 🔗 **API Documentation**
+  - `docs/API_Documentation.pdf`
+
 # Future Improvements
 
 - Refresh Token Rotation
