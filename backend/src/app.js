@@ -15,7 +15,7 @@ const app = express();
 const allowedOrigins = [
   process.env.CLIENT_URL,
   "http://localhost:5173",
-  "http://localhost:3000",
+  "https://kinetic-care-kc.vercel.app",
 ].filter(Boolean);
 
 app.use(
